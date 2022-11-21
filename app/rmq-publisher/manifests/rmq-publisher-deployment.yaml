@@ -16,6 +16,7 @@ spec:
       containers:
       - name: rmq-publisher
         image: debbabi/rmq-publisher:latest
+        imagePullPolicy: Always
         env:
         - name: RABBITMQ_HOST 
           valueFrom:

@@ -16,6 +16,7 @@ spec:
       containers:
       - name: rmq-consumer
         image: {{ .Values.consumer.imageRepository }}:{{ .Values.consumer.imageTag }}
+        imagePullPolicy: Always
         env:
         - name: RABBITMQ_HOST 
           valueFrom:
