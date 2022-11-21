@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <meta charset="utf=8"/>
+        <title>App Fleet Management - Demo</title>
+    </head>
+    <body>
+        <img src='/assets/atos-logo-blue.png'/>
+        <br>
+        <h2>App Fleet Management Demo - RabbitMQ Publisher</h2>
+        <h3>Send Message:</h3>
+        <form action="/" method="POST">
+            <div>
+                <label>Queue:</label>
+                <input type="text" name="queue" id="queue" value="TestQueue"/>
+            </div>
+            <div>
+                <label>Message:</label>
+                <textarea name="content" id="content"></textarea>
+            </div>
+            <div>
+                <input type="submit" value="Publish message"/>
+            </div>
+        </form>
+    </body>
+</html>

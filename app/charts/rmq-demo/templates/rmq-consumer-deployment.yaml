@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment                 # Type of Kubernetes resource
+metadata:
+  name: rmq-consumer             # Name of the Kubernetes resource
+spec:
+  replicas: 1                    # Number of pods to run at any given time
+  selector:
+    matchLabels:
+      app: rmq-consumer          # This deployment applies to any Pods matching the specified label
+  template:                      # This deployment will create a set of pods using the configurations in this template
+    metadata:
+      labels:                    # The labels that will be applied to all of the pods in this deployment
+        app: rmq-consumer 
+    spec:                        # Spec for the container which will run in the Pod
+      containers:
+      - name: rmq-consumer
+        image: {{ .Values.consumer.imageRepository }}:{{ .Values.consumer.imageTag }}
+        env:
+        - name: RABBITMQ_HOST 
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmqserver-default-user
+              key: host
+        - name: RABBITMQ_PORT
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmqserver-default-user
+              key: port
+        - name: RABBITMQ_USER 
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmqserver-default-user
+              key: username
+        - name: RABBITMQ_PASS 
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmqserver-default-user
+              key: password
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 4002  # Should match the port number that the Go application listens on

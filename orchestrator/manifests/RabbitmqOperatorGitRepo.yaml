@@ -1,0 +1,15 @@
+--- 
+apiVersion: fleet.cattle.io/v1alpha1
+kind: GitRepo
+metadata: 
+  name: rabbitmq-operator
+  namespace: edge-clusters
+spec: 
+  paths: 
+    - rabbitmq-operator
+  repo: "https://github.com/edge-orchestration/app-fleet-demo"
+  branch: main
+  targets: 
+    - 
+      clusterSelector: {}
+      name: all-clusters

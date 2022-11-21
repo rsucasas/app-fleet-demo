@@ -1,0 +1,11 @@
+# Default values for rmq-demo.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+publisher:
+  imageRepository:  debbabi/rmq-publisher
+  imageTag: latest
+
+consumer:
+  imageRepository:  debbabi/rmq-consumer
+  imageTag: latest
