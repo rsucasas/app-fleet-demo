@@ -13,10 +13,10 @@ spec:
       labels:                    # The labels that will be applied to all of the pods in this deployment
         app: rmq-consumer 
     spec:                        # Spec for the container which will run in the Pod
+      imagePullPolicy: Always
       containers:
       - name: rmq-consumer
         image: {{ .Values.consumer.imageRepository }}:{{ .Values.consumer.imageTag }}
-        imagePullPolicy: Always
         env:
         - name: RABBITMQ_HOST 
           valueFrom:

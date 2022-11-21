@@ -13,10 +13,10 @@ spec:
       labels:                    # The labels that will be applied to all of the pods in this deployment
         app: rmq-publisher 
     spec:                        # Spec for the container which will run in the Pod
+      imagePullPolicy: Always
       containers:
       - name: rmq-publisher
-        image: {{ .Values.publisher.imageRepository }}:{{ .Values.publisher.imageTag }}
-        imagePullPolicy: Always
+        image: {{ .Values.publisher.imageRepository }}:{{ .Values.publisher.imageTag }}        
         env:
         - name: RABBITMQ_HOST 
           valueFrom:
