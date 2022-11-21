@@ -5,10 +5,10 @@ build:
 	docker build -t rmq-publisher . --target production
 
 tag:
-	docker tag rmq-publisher debbabi/rmq-publisher:latest
+	docker tag rmq-publisher debbabi/rmq-publisher:0.1.0
 
 push:
-	docker push debbabi/rmq-publisher:latest
+	docker push debbabi/rmq-publisher:0.1.0
 	
 start:
 	docker run --rm -p 4001:4001 --name rmq-publisher -e RABBITMQ_HOST=some-rabbit rmq-publisher

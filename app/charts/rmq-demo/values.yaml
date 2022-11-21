@@ -4,8 +4,8 @@
 
 publisher:
   imageRepository:  debbabi/rmq-publisher
-  imageTag: latest
+  imageTag: 0.1.0
 
 consumer:
   imageRepository:  debbabi/rmq-consumer
-  imageTag: latest
+  imageTag: 0.1.0
