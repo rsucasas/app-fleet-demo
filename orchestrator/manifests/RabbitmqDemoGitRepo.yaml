@@ -10,6 +10,9 @@ spec:
   repo: "https://github.com/edge-orchestration/app-fleet-demo"
   branch: main
   targets: 
-    - 
-      clusterSelector: {}
-      name: all-clusters
+    - name: france-manufacturing-edge-clusters
+      clusterSelector: 
+        matchLabels:
+          industry: manufacturing
+          country: france
+      
