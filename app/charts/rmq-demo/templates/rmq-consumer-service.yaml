@@ -3,8 +3,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rmq-consumer
+  labels:
+    app: rmq-consumer
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: rmq-consumer
   ports:
