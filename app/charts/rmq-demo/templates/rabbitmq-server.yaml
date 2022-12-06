@@ -5,9 +5,9 @@ metadata:
 spec:
   replicas: 1
   persistence:
-    storage: {{ .Values.rabbitmq-server.persistence.storage }}
-    {{ if .Values.rabbitmq-server.persistence.storageClassName }}
-    storageClassName: {{ .Values.rabbitmq-server.persistence.storageClassName | quote }}
+    storage: {{ .Values.rabbitmqServer.persistence.storage }}
+    {{ if .Values.rabbitmqServer.persistence.storageClassName }}
+    storageClassName: {{ .Values.rabbitmqServer.persistence.storageClassName | quote }}
     {{- end }}
   resources:
     requests:
