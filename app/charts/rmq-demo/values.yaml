@@ -9,3 +9,8 @@ publisher:
 consumer:
   imageRepository:  debbabi/rmq-consumer
   imageTag: 0.1.0
+
+rabbitmq-server:
+  persistence:
+    storageClassName:
+    storage: 10Gi
