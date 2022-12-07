@@ -1,0 +1,10 @@
+targetCustomizations:
+- name: gke
+  helm:
+    values:
+      rabbitmqServer:
+        persistence:
+          storageClassName: premium-rwo
+  clusterSelector:
+    matchLabels:
+      provider: gke

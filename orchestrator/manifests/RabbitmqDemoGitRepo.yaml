@@ -1,18 +1,17 @@
---- 
+---
 apiVersion: fleet.cattle.io/v1alpha1
 kind: GitRepo
-metadata: 
+metadata:
   name: rmq-demo
   namespace: edge-clusters
-spec: 
-  paths: 
+spec:
+  paths:
     - app/charts/rmq-demo
   repo: "https://github.com/edge-orchestration/app-fleet-demo"
   branch: main
-  targets: 
+  targets:
     - name: france-manufacturing-edge-clusters
-      clusterSelector: 
+      clusterSelector:
         matchLabels:
           industry: manufacturing
           country: france
-      
