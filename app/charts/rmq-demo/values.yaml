@@ -4,11 +4,11 @@
 
 publisher:
   imageRepository:  debbabi/rmq-publisher
-  imageTag: 0.1.0
+  imageTag: 0.1.2
 
 consumer:
   imageRepository:  debbabi/rmq-consumer
-  imageTag: 0.1.0
+  imageTag: 0.1.2
 
 rabbitmqServer:
   persistence:

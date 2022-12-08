@@ -29,9 +29,9 @@ func main() {
 	flag.StringVar(&RabbitMq_Pass, "rabbitmq-pass", LookupEnvOrString("RABBITMQ_PASS", RabbitMq_Pass), "RabbitMQ Password")
 	flag.Parse()
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
+	mux.HandleFunc("/consumer", homeHandler)
 	fileServer := http.FileServer(http.Dir("./assets/"))
-	mux.Handle("/assets/", http.StripPrefix("/assets", fileServer))
+	mux.Handle("/consumer/assets/", http.StripPrefix("/consumer/assets", fileServer))
 
 	// start web server
 	log.Println("Starting RabbitMQ Demo app - Consumer on: 4002")
@@ -42,7 +42,7 @@ func main() {
 	log.Fatal(err)
 }
 
-func home(w http.ResponseWriter, r *http.Request) {
+func homeHandler(w http.ResponseWriter, r *http.Request) {
 	ts, err := template.ParseFiles("./home.page.tmpl")
 	if err != nil {
 		log.Println(err.Error())
