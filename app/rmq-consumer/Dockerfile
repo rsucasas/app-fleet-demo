@@ -23,6 +23,6 @@ RUN apk add --no-cache ca-certificates
 # Copy built binary from builder
 COPY --from=builder app .
 # Expose port
-EXPOSE 4001
+EXPOSE 4002
 # Exec built binary
 CMD ./app

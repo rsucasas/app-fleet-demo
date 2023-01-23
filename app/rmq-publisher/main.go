@@ -27,6 +27,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/publisher", homeHandler)
 	mux.HandleFunc("/publisher/publish", publishHandler)
+	mux.HandleFunc("/healthz", healthHandler)
 	fileServer := http.FileServer(http.Dir("./assets/"))
 	mux.Handle("/publisher/assets/", http.StripPrefix("/publisher/assets", fileServer))
 
@@ -54,28 +55,37 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func publishHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Publishing a message to RabbitMQ...")
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		if err != nil {
 			log.Println(err.Error())
-			http.Error(w, "Internal Server Error", 500)
+			http.Error(w, "Internal Server Error:"+err.Error(), 500)
 			return
 		}
 		queueValue := r.PostForm.Get("queue")
 		contentValue := r.PostForm.Get("content")
-		publish(queueValue, contentValue)
+		err = publish(queueValue, contentValue)
+		if err != nil {
+			log.Println(err.Error())
+			http.Error(w, "Internal Server Error:"+err.Error(), 500)
+			return
+		}
 		http.Redirect(w, r, "/publisher", http.StatusSeeOther)
 	} else {
 		http.Error(w, "Internal Server Error", 500)
 	}
 }
 
-func publish(queueValue, contentValue string) {
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
+func publish(queueValue, contentValue string) error {
 	log.Printf("Publish to queue [%s] message [%s]\n", queueValue, contentValue)
 	conn, err := amqp.Dial(RabbitMQInstanceConnectionPath())
 	if err != nil {
-		log.Println(err)
-		panic(err)
+		return err
 	}
 	defer conn.Close()
 
@@ -83,8 +93,7 @@ func publish(queueValue, contentValue string) {
 
 	channel, err := conn.Channel()
 	if err != nil {
-		fmt.Println(err)
-		panic(err)
+		return err
 	}
 	defer channel.Close()
 
@@ -97,8 +106,7 @@ func publish(queueValue, contentValue string) {
 		nil,        // arguments
 	)
 	if err != nil {
-		log.Println(err)
-		panic(err)
+		return err
 	}
 	log.Println(queue)
 	err = channel.Publish(
@@ -112,10 +120,10 @@ func publish(queueValue, contentValue string) {
 		},
 	)
 	if err != nil {
-		fmt.Println(err)
-		panic(err)
+		return err
 	}
 	log.Printf("Successfully Published Message to Queue [%s]\n", queueValue)
+	return nil
 }
 
 func LookupEnvOrString(key string, defaultVal string) string {

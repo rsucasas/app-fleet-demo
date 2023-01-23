@@ -11,8 +11,8 @@ spec:
     {{- end }}
   resources:
     requests:
-      cpu: 500m
-      memory: 1Gi
+      cpu: {{ .Values.rabbitmqServer.resources.requests.cpu }}
+      memory: {{ .Values.rabbitmqServer.resources.requests.memory }}
     limits:
-      cpu: 800m
-      memory: 1Gi
+      cpu: {{ .Values.rabbitmqServer.resources.limits.cpu }}
+      memory: {{ .Values.rabbitmqServer.resources.limits.memory }}

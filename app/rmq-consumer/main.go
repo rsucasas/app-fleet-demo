@@ -30,6 +30,7 @@ func main() {
 	flag.Parse()
 	mux := http.NewServeMux()
 	mux.HandleFunc("/consumer", homeHandler)
+	mux.HandleFunc("/healthz", healthHandler)
 	fileServer := http.FileServer(http.Dir("./assets/"))
 	mux.Handle("/consumer/assets/", http.StripPrefix("/consumer/assets", fileServer))
 
@@ -49,7 +50,12 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
-	msgsValues := Consume()
+	msgsValues, err := Consume()
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Internal Server Error:"+err.Error(), 500)
+		return
+	}
 	err = ts.Execute(w, &templateData{Messages: msgsValues})
 	if err != nil {
 		log.Println(err.Error())
@@ -57,18 +63,20 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Consume() *[]string {
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
+func Consume() (*[]string, error) {
 	conn, err := amqp.Dial(RabbitMQInstanceConnectionPath())
 	if err != nil {
-		fmt.Println(err)
-		panic(err)
+		return nil, err
 	}
 	defer conn.Close()
 
 	ch, err := conn.Channel()
 	if err != nil {
-		fmt.Println(err)
-		panic(err)
+		return nil, err
 	}
 	defer ch.Close()
 
@@ -81,15 +89,21 @@ func Consume() *[]string {
 		false,
 		nil,
 	)
+	if err != nil {
+		return nil, err
+	}
 	msgsValues := []string{}
+	//ok := make(chan struct{})
 	go func() {
 		for d := range msgs {
 			msgsValues = append(msgsValues, fmt.Sprintf("%s", d.Body))
 			log.Printf("Received Message: %s\n", d.Body)
 		}
+		//close(ok)
 	}()
+	//<-ok
 	log.Println("All messages received.")
-	return &msgsValues
+	return &msgsValues, nil
 }
 
 func LookupEnvOrString(key string, defaultVal string) string {

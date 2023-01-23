@@ -17,6 +17,12 @@ spec:
       - name: rmq-consumer
         image: {{ .Values.consumer.imageRepository }}:{{ .Values.consumer.imageTag }}
         imagePullPolicy: Always
+        ports:
+        - containerPort: 4002  # Should match the port number that the Go application listens on
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 4002
         env:
         - name: RABBITMQ_HOST 
           valueFrom:
@@ -38,6 +44,3 @@ spec:
             secretKeyRef:
               name: rabbitmqserver-default-user
               key: password
-        imagePullPolicy: IfNotPresent
-        ports:
-          - containerPort: 4002  # Should match the port number that the Go application listens on
