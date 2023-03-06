@@ -3,7 +3,7 @@ apiVersion: fleet.cattle.io/v1alpha1
 kind: GitRepo
 metadata:
   name: rmq-demo
-  namespace: default
+  namespace: kind-cluster2
 spec:
   paths:
     - app/charts/rmq-demo
