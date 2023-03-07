@@ -9,6 +9,7 @@ spec:
     - app/charts/rmq-demo
   repo: "https://github.com/rsucasas/app-fleet-demo"
   branch: "main"
+  
   #targets:
   #  - name: france-manufacturing-edge-clusters
   #    clusterSelector:
