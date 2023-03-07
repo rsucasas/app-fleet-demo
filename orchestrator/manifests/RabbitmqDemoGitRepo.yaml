@@ -9,9 +9,9 @@ spec:
     - app/charts/rmq-demo
   repo: "https://github.com/rsucasas/app-fleet-demo"
   branch: "0.2.2"
-  targets:
-    - name: france-manufacturing-edge-clusters
-      clusterSelector:
-        matchLabels:
-          industry: manufacturing
-          country: france
+  #targets:
+  #  - name: france-manufacturing-edge-clusters
+  #    clusterSelector:
+  #      matchLabels:
+  #        industry: manufacturing
+  #        country: france
