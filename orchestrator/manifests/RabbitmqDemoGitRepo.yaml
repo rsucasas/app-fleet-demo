@@ -7,7 +7,7 @@ metadata:
 spec:
   paths:
     - app/charts/rmq-demo
-  repo: "https://github.com/edge-orchestration/app-fleet-demo"
+  repo: "https://github.com/rsucasas/app-fleet-demo"
   branch: "0.2.2"
   targets:
     - name: france-manufacturing-edge-clusters
